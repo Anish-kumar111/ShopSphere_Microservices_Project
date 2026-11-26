@@ -126,7 +126,7 @@ services:
     logging: *logging
 
   traefik: # local edge router: http://shop.localhost, http://admin.localhost, dashboard :8080
-    image: traefik:v3.3
+    image: traefik:v3.6
     command:
       - --providers.file.filename=/etc/traefik/dynamic.yml
       - --providers.file.watch=true
