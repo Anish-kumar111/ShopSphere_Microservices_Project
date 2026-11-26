@@ -214,7 +214,7 @@ services:
     logging: *logging
 
   rabbitmq-init: # one-shot job: exchanges, quorum queues and dead-letter queues from definitions.json
-    image: curlimages/curl:8.11.1
+    image: curlimages/curl:8.23.0
     profiles: ["events", "apps"]
     depends_on: { rabbitmq: { condition: service_healthy } }
     restart: "no"
