@@ -255,7 +255,7 @@ services:
     logging: *logging
 
   storage-init: # one-shot job: buckets + browser CORS + "delete raw uploads after 30 days"
-    image: amazon/aws-cli:2.27.50 # the same commands work against SeaweedFS, Cloudflare R2 and AWS S3
+    image: amazon/aws-cli:2.42.1 # the same commands work against SeaweedFS, Cloudflare R2 and AWS S3
     profiles: ["files", "apps"]
     depends_on: { s3: { condition: service_healthy } }
     restart: "no"
