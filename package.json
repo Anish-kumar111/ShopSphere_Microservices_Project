@@ -32,7 +32,7 @@
     "docker:redis": "docker compose -f infra/docker/docker-compose.yml exec redis redis-cli"
   },
   "devDependencies": {
-    "@types/node": "^22.19.0",
+    "@types/node": "^26.6.6",
     "prettier": "^3.6.2",
     "tsx": "^4.23.15",
     "turbo": "^2.11.13",
