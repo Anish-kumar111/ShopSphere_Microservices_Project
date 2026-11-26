@@ -1,0 +1,23 @@
+# YAML style and safety rules, checked in CI: `uvx yamllint .`
+extends: default
+
+ignore: |
+  node_modules/
+  pnpm-lock.yaml
+  .venv/
+  **/.next/
+
+rules:
+  line-length:
+    max: 140
+    level: warning
+  document-start: disable # "---" at the top is optional
+  comments:
+    min-spaces-from-content: 1
+  braces:
+    max-spaces-inside: 1 # allow { key: value }
+  brackets:
+    max-spaces-inside: 1
+  truthy:
+    check-keys: false # GitHub Actions uses `on:` as a key
+    allowed-values: ["true", "false"] # forbids yes/no/on/off as VALUES (the "Norway problem")

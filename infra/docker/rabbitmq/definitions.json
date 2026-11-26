@@ -1,0 +1,32 @@
+{
+  "exchanges": [
+    { "name": "jobs", "vhost": "/", "type": "direct", "durable": true, "auto_delete": false, "internal": false, "arguments": {} },
+    { "name": "jobs.dlx", "vhost": "/", "type": "direct", "durable": true, "auto_delete": false, "internal": false, "arguments": {} }
+  ],
+  "queues": [
+    {
+      "name": "notifications", "vhost": "/", "durable": true, "auto_delete": false,
+      "arguments": { "x-queue-type": "quorum", "x-dead-letter-exchange": "jobs.dlx", "x-dead-letter-routing-key": "notifications", "x-delivery-limit": 10 }
+    },
+    { "name": "notifications.dlq", "vhost": "/", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    {
+      "name": "etl.jobs", "vhost": "/", "durable": true, "auto_delete": false,
+      "arguments": { "x-queue-type": "quorum", "x-dead-letter-exchange": "jobs.dlx", "x-dead-letter-routing-key": "etl.jobs", "x-delivery-limit": 5 }
+    },
+    { "name": "etl.jobs.dlq", "vhost": "/", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    {
+      "name": "support", "vhost": "/", "durable": true, "auto_delete": false,
+      "arguments": { "x-queue-type": "quorum", "x-dead-letter-exchange": "jobs.dlx", "x-dead-letter-routing-key": "support", "x-delivery-limit": 10 }
+    },
+    { "name": "support.dlq", "vhost": "/", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } }
+  ],
+  "bindings": [
+    { "source": "jobs", "vhost": "/", "destination": "notifications", "destination_type": "queue", "routing_key": "SendOrderEmail", "arguments": {} },
+    { "source": "jobs", "vhost": "/", "destination": "notifications", "destination_type": "queue", "routing_key": "SendPasswordReset", "arguments": {} },
+    { "source": "jobs", "vhost": "/", "destination": "etl.jobs", "destination_type": "queue", "routing_key": "RunImport", "arguments": {} },
+    { "source": "jobs", "vhost": "/", "destination": "support", "destination_type": "queue", "routing_key": "CreateSupportTicket", "arguments": {} },
+    { "source": "jobs.dlx", "vhost": "/", "destination": "notifications.dlq", "destination_type": "queue", "routing_key": "notifications", "arguments": {} },
+    { "source": "jobs.dlx", "vhost": "/", "destination": "etl.jobs.dlq", "destination_type": "queue", "routing_key": "etl.jobs", "arguments": {} },
+    { "source": "jobs.dlx", "vhost": "/", "destination": "support.dlq", "destination_type": "queue", "routing_key": "support", "arguments": {} }
+  ]
+}

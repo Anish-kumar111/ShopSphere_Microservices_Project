@@ -1,0 +1,35 @@
+# Local edge router (plays the role of CloudFront + WAF + ALB on AWS).
+# Add to your hosts file:  127.0.0.1 shop.localhost admin.localhost
+http:
+  routers:
+    # The admin app calls the same BFF, so /api and /ws are routed for both hosts.
+    api:
+      rule: "(Host(`shop.localhost`) || Host(`admin.localhost`)) && PathPrefix(`/api`)"
+      service: bff
+      middlewares: [ratelimit, secure-headers]
+    realtime:
+      rule: "(Host(`shop.localhost`) || Host(`admin.localhost`)) && PathPrefix(`/ws`)"
+      service: realtime
+    web:
+      rule: "Host(`shop.localhost`)"
+      service: web
+      middlewares: [secure-headers]
+    admin:
+      rule: "Host(`admin.localhost`)"
+      service: admin
+      middlewares: [secure-headers]
+
+  middlewares:
+    ratelimit:
+      rateLimit: { average: 50, burst: 100 } # per client IP
+    secure-headers:
+      headers:
+        frameDeny: true
+        contentTypeNosniff: true
+        referrerPolicy: "strict-origin-when-cross-origin"
+
+  services:
+    bff: { loadBalancer: { servers: [{ url: "http://host.docker.internal:4000" }] } }
+    realtime: { loadBalancer: { servers: [{ url: "http://host.docker.internal:4004" }] } }
+    web: { loadBalancer: { servers: [{ url: "http://host.docker.internal:3000" }] } }
+    admin: { loadBalancer: { servers: [{ url: "http://host.docker.internal:5173" }] } }

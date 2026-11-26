@@ -1,0 +1,61 @@
+sku,name,category,price,stock,is_active,description
+FAS-01001,Denim Jacket Grey,fashion,355.91,121,false,Denim Jacket Grey for everyday use. Category: fashion.
+TOY-01002,Building Blocks Blue,toys,120.88,64,true,Building Blocks Blue for everyday use. Category: toys.
+,Table Lamp Mini,home,202.83,185,true,Table Lamp Mini for everyday use. Category: home.
+HOM-01004,Plant Pot Max,home,101.25,314,true,Plant Pot Max for everyday use. Category: home.
+SPO-01005,Gym Bag Black,sports,29.25,245,true,Gym Bag Black for everyday use. Category: sports.
+BEA-01006,Lip Balm Mini,beauty,-15.00,227,true,Lip Balm Mini for everyday use. Category: beauty.
+HOM-01007,Scented Candle Lite,home,68.45,64,true,Scented Candle Lite for everyday use. Category: home.
+TOY-01008,Magic Kit Lite,toys,239.69,232,true,Magic Kit Lite for everyday use. Category: toys.
+BEA-01009,,beauty,384.05,333,true,Lip Balm White for everyday use. Category: beauty.
+BOO-01010,React Handbook Mini,books,399.86,211,true,React Handbook Mini for everyday use. Category: books.
+GRO-01011,Rice 5kg Pro,grocery,328.87,160,true,Rice 5kg Pro for everyday use. Category: grocery.
+TOY-01012,Plush Bear Grey,furniture,429.21,351,true,Plush Bear Grey for everyday use. Category: toys.
+HOM-01013,Table Lamp White,home,43.77,49,true,Table Lamp White for everyday use. Category: home.
+FAS-01014,Denim Jacket Lite,fashion,430.57,287,true,Denim Jacket Lite for everyday use. Category: fashion.
+HOM-01015,Throw Pillow Grey,home,393.38,ten,true,Throw Pillow Grey for everyday use. Category: home.
+ELE-01016,Laptop Stand Lite,electronics,141.98,53,false,Laptop Stand Lite for everyday use. Category: electronics.
+BOO-01017,Python Cookbook Mini,books,102.46,55,true,Python Cookbook Mini for everyday use. Category: books.
+TOY-01018,Puzzle 1000 Green,toys,abc,413,true,Puzzle 1000 Green for everyday use. Category: toys.
+ELE-01019,Laptop Stand Black,electronics,82.83,359,true,Laptop Stand Black for everyday use. Category: electronics.
+TOY-01020,Kite Black,toys,83.27,73,false,Kite Black for everyday use. Category: toys.
+ele-123,Lip Balm Blue,beauty,333.95,497,true,Lip Balm Blue for everyday use. Category: beauty.
+HOM-01022,Storage Box Pro,home,190.08,174,true,Storage Box Pro for everyday use. Category: home.
+TOY-01023,Plush Bear Grey,toys,350.02,290,false,Plush Bear Grey for everyday use. Category: toys.
+HOM-01024,Ceramic Mug Blue,home,72.52,-4,true,Ceramic Mug Blue for everyday use. Category: home.
+HOM-01025,Wall Clock Mini,home,298.55,248,false,Wall Clock Mini for everyday use. Category: home.
+GRO-01026,Rice 5kg Green,grocery,98.57,262,true,Rice 5kg Green for everyday use. Category: grocery.
+TOY-01027,"=HYPERLINK(""http://evil.example"",""Click"")",toys,128.89,347,false,Magic Kit White for everyday use. Category: toys.
+GRO-01028,Dark Chocolate Black,grocery,100.79,306,true,Dark Chocolate Black for everyday use. Category: grocery.
+ELE-01029,Smart Watch Green,electronics,425.51,392,true,Smart Watch Green for everyday use. Category: electronics.
+SPO-01030,Cycling Gloves Grey,sports,0,254,true,Cycling Gloves Grey for everyday use. Category: sports.
+FAS-01031,Leather Belt Pro,fashion,240.60,117,true,Leather Belt Pro for everyday use. Category: fashion.
+TOY-01032,Puzzle 1000 Pro,toys,388.07,21,true,Puzzle 1000 Pro for everyday use. Category: toys.
+ELE-01033,Power Bank White,,388.23,294,true,Power Bank White for everyday use. Category: electronics.
+BEA-01034,Nail Kit Green,beauty,53.60,10,true,Nail Kit Green for everyday use. Category: beauty.
+FAS-01035,Linen Shirt Grey,fashion,41.48,432,true,Linen Shirt Grey for everyday use. Category: fashion.
+BOO-01036,A,books,181.40,40,true,React Handbook Lite for everyday use. Category: books.
+SPO-01037,Dumbbell Set Red,sports,151.21,86,true,Dumbbell Set Red for everyday use. Category: sports.
+HOM-01038,Storage Box Grey,home,159.29,490,true,Storage Box Grey for everyday use. Category: home.
+BOO-01039,Clean Code Notes Blue,books,116.67,88,false,Clean Code Notes Blue for everyday use. Category: books.
+BOO-01039,Running Cap Blue,fashion,428.18,321,true,Running Cap Blue for everyday use. Category: fashion.
+GRO-01041,Almonds Lite,grocery,290.06,319,true,Almonds Lite for everyday use. Category: grocery.
+TOY-01042,Toy Car Mini,toys,32.59,226,true,Toy Car Mini for everyday use. Category: toys.
+SPO-01043,Yoga Mat Grey,sports,229.29,158,true,Yoga Mat Grey for everyday use. Category: sports.
+GRO-01044,Green Tea Black,grocery,167.19,146,true,Green Tea Black for everyday use. Category: grocery.
+HOM-01045,   Ceramic Mug Blue   ,home,261.99,488,true,Throw Pillow Mini for everyday use. Category: home.
+GRO-01046,Honey Jar Grey,grocery,273.04,256,true,Honey Jar Grey for everyday use. Category: grocery.
+ELE-01047,Power Bank White,electronics,365.31,428,true,Power Bank White for everyday use. Category: electronics.
+HOM-01048,Cotton Towel Black,home,112.99,224,yes,Cotton Towel Black for everyday use. Category: home.
+FAS-01049,Silk Tie Grey,fashion,413.24,198,true,Silk Tie Grey for everyday use. Category: fashion.
+TOY-01050,Building Blocks Grey,toys,31.53,48,true,Building Blocks Grey for everyday use. Category: toys.
+BEA-01051,Sunscreen SPF50 Green,Electronics,326.23,336,false,Sunscreen SPF50 Green for everyday use. Category: beauty.
+FAS-01052,Silk Tie White,fashion,263.07,72,true,Silk Tie White for everyday use. Category: fashion.
+SPO-01053,Resistance Band Blue,sports,268.58,480,true,Resistance Band Blue for everyday use. Category: sports.
+SPO-01054,Café Crème Mug,sports,366.31,343,true,Resistance Band Grey for everyday use. Category: sports.
+HOM-01055,Throw Pillow Max,home,164.10,185,true,Throw Pillow Max for everyday use. Category: home.
+FAS-01056,Wool Scarf Grey,fashion,426.56,248,true,Wool Scarf Grey for everyday use. Category: fashion.
+BOO-01057,Python Cookbook Blue,books,"1,299.00",432,true,Python Cookbook Blue for everyday use. Category: books.
+ELE-01058,Mechanical Keyboard Lite,electronics,60.71,192,true,Mechanical Keyboard Lite for everyday use. Category: electronics.
+FAS-01059,Leather Belt Lite,fashion,364.45,84,true,Leather Belt Lite for everyday use. Category: fashion.
+ELE-01060,Webcam HD Grey,electronics,305.01,121,true,Webcam HD Grey for everyday use. Category: electronics.

@@ -1,0 +1,84 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: pnpm/action-setup@v4 # version comes from "packageManager" in package.json
+      - uses: actions/setup-node@v4
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      # On pull requests only packages changed since main (and their dependents) run.
+      - run: pnpm turbo run typecheck lint test build ${{ github.event_name == 'pull_request' && '--filter=...[origin/main]' || '' }}
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with: { enable-cache: true }
+      - run: uv sync --all-packages --frozen
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run pytest
+
+  # YAML style + a fully rendered docker-compose.yml (catches bad anchors, typos and missing files).
+  infra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uvx yamllint --strict .
+      - name: Validate docker-compose.yml with every profile
+        working-directory: infra/docker
+        run: docker compose --profile apps --profile events --profile files --profile ai --profile obs config --quiet
+
+  # Proves every Dockerfile target still builds. Pushing to ECR happens in the deploy workflow (AWS book, Chapter 12).
+  images:
+    needs: [node, python, infra]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: bff, file: node, target: service, arg: "PACKAGE=@shopsphere/bff" }
+          - { name: auth, file: node, target: service, arg: "PACKAGE=@shopsphere/auth" }
+          - { name: user, file: node, target: service, arg: "PACKAGE=@shopsphere/user" }
+          - { name: order, file: node, target: service, arg: "PACKAGE=@shopsphere/order" }
+          - { name: realtime-gateway, file: node, target: service, arg: "PACKAGE=@shopsphere/realtime-gateway" }
+          - { name: outbox-relay, file: node, target: service, arg: "PACKAGE=@shopsphere/outbox-relay" }
+          - { name: notification-worker, file: node, target: service, arg: "PACKAGE=@shopsphere/notification-worker" }
+          - { name: analytics-consumer, file: node, target: service, arg: "PACKAGE=@shopsphere/analytics-consumer" }
+          - { name: cache-updater, file: node, target: service, arg: "PACKAGE=@shopsphere/cache-updater" }
+          - { name: web, file: node, target: web, arg: "PACKAGE=@shopsphere/web" }
+          - { name: admin, file: node, target: admin, arg: "PACKAGE=@shopsphere/admin" }
+          - { name: import-api, file: python, target: runtime, arg: "SERVICE=import-api" }
+          - { name: etl-worker, file: python, target: runtime, arg: "SERVICE=etl-worker" }
+          - { name: ai-chat, file: python, target: runtime, arg: "SERVICE=ai-chat" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: infra/docker/images/${{ matrix.file }}.Dockerfile
+          target: ${{ matrix.target }}
+          build-args: ${{ matrix.arg }}
+          tags: shopsphere/${{ matrix.name }}:${{ github.sha }}
+          push: false
+          cache-from: type=gha,scope=${{ matrix.name }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.name }}

@@ -1,0 +1,25 @@
+id,category,question,answer
+FAQ-001,shipping,How long does shipping take?,Standard shipping takes 3 to 5 business days. Express shipping takes 1 to 2 business days.
+FAQ-002,shipping,Do you ship internationally?,"Yes. We ship to India, the US, the UK, Germany, Japan, Brazil, the UAE and Canada."
+FAQ-003,shipping,How much does shipping cost?,"Shipping is free for orders above 50 USD. Below that, standard shipping costs 4.99 USD."
+FAQ-004,shipping,Can I change my delivery address?,"Yes, while the order status is PENDING or PAID. After it is SHIPPED the address cannot be changed."
+FAQ-005,returns,What is your return policy?,You can return most items within 30 days of delivery if they are unused and in the original box.
+FAQ-006,returns,How do I start a return?,"Open My Orders, choose the order, click Return Item and print the free return label."
+FAQ-007,returns,When will I get my refund?,Refunds go back to the original payment method within 5 to 7 business days after we receive the item.
+FAQ-008,returns,Which items cannot be returned?,"Opened beauty products, grocery items and gift cards cannot be returned."
+FAQ-009,orders,How do I track my order?,Open My Orders and click Track. You will also get an email with the tracking link when the order ships.
+FAQ-010,orders,Can I cancel my order?,You can cancel an order while it is PENDING or PAID. Shipped orders must be returned instead.
+FAQ-011,orders,Why was my order cancelled?,Orders are cancelled if payment fails or an item goes out of stock. You are never charged for cancelled orders.
+FAQ-012,orders,What do the order statuses mean?,"PENDING means we are waiting for payment, PAID means payment is done, SHIPPED means it is on the way, CANCELLED means it was stopped."
+FAQ-013,payments,Which payment methods do you accept?,"We accept credit cards, debit cards, UPI and PayPal."
+FAQ-014,payments,Is my payment information safe?,Yes. Card details are handled by our payment provider and never stored on our servers.
+FAQ-015,payments,Why was I charged twice?,"You were not. A temporary hold may appear, but it disappears within 3 business days. Contact support if it does not."
+FAQ-016,account,How do I reset my password?,Click Forgot Password on the login page and follow the link we email you. The link is valid for 30 minutes.
+FAQ-017,account,How do I delete my account?,"Go to Settings, then Privacy, then Delete Account. Your data is removed within 30 days."
+FAQ-018,account,Can I change my email address?,"Yes. Go to Settings, then Profile. We will send a confirmation link to the new address."
+FAQ-019,products,Are your electronics covered by warranty?,Yes. All electronics have a 1 year manufacturer warranty.
+FAQ-020,products,How do I know if an item is in stock?,"The product page shows In Stock, Low Stock (less than 10 left) or Out of Stock."
+FAQ-021,products,Will out of stock items come back?,Most items are restocked within 2 weeks. Click Notify Me on the product page to get an email.
+FAQ-022,support,How do I contact a human?,Type 'talk to a human' in the chat or email support@shopsphere.example. We reply within 24 hours.
+FAQ-023,support,What are your support hours?,"The chatbot is available 24/7. Human support works Monday to Saturday, 9 AM to 6 PM."
+FAQ-024,bulk,Can businesses buy in bulk?,Yes. Orders above 100 units get a 10 percent discount. Contact sales@shopsphere.example.

@@ -1,0 +1,201 @@
+sku,name,category,price,stock,is_active,description
+HOM-00001,Ceramic Mug Green,home,111.71,71,true,Ceramic Mug Green for everyday use. Category: home.
+HOM-00002,Throw Pillow Black,home,15.35,111,true,Throw Pillow Black for everyday use. Category: home.
+ELE-00003,Smart Watch Max,electronics,189.94,229,false,Smart Watch Max for everyday use. Category: electronics.
+SPO-00004,Yoga Mat Blue,sports,314.77,174,true,Yoga Mat Blue for everyday use. Category: sports.
+FAS-00005,Wool Scarf Grey,fashion,47.79,194,true,Wool Scarf Grey for everyday use. Category: fashion.
+TOY-00006,Kite Lite,toys,120.51,22,true,Kite Lite for everyday use. Category: toys.
+HOM-00007,Throw Pillow White,home,249.31,424,false,Throw Pillow White for everyday use. Category: home.
+TOY-00008,Board Game White,toys,22.53,116,true,Board Game White for everyday use. Category: toys.
+HOM-00009,Storage Box White,home,172.30,232,true,Storage Box White for everyday use. Category: home.
+FAS-00010,Silk Tie Grey,fashion,95.86,136,true,Silk Tie Grey for everyday use. Category: fashion.
+FAS-00011,Wool Scarf Blue,fashion,209.09,138,true,Wool Scarf Blue for everyday use. Category: fashion.
+BOO-00012,Kafka in Practice Black,books,104.61,16,true,Kafka in Practice Black for everyday use. Category: books.
+BEA-00013,Sunscreen SPF50 White,beauty,96.52,482,false,Sunscreen SPF50 White for everyday use. Category: beauty.
+TOY-00014,Board Game Mini,toys,179.24,468,true,Board Game Mini for everyday use. Category: toys.
+FAS-00015,Canvas Sneakers Blue,fashion,112.49,287,true,Canvas Sneakers Blue for everyday use. Category: fashion.
+SPO-00016,Resistance Band Lite,sports,180.93,112,true,Resistance Band Lite for everyday use. Category: sports.
+GRO-00017,Coffee Beans Black,grocery,387.77,78,true,Coffee Beans Black for everyday use. Category: grocery.
+BEA-00018,Lip Balm Pro,beauty,172.97,239,true,Lip Balm Pro for everyday use. Category: beauty.
+SPO-00019,Yoga Mat White,sports,307.41,274,true,Yoga Mat White for everyday use. Category: sports.
+TOY-00020,Puzzle 1000 Green,toys,196.77,232,true,Puzzle 1000 Green for everyday use. Category: toys.
+SPO-00021,Jump Rope Max,sports,410.86,445,true,Jump Rope Max for everyday use. Category: sports.
+BOO-00022,Python Cookbook Grey,books,343.60,276,true,Python Cookbook Grey for everyday use. Category: books.
+ELE-00023,Mechanical Keyboard Mini,electronics,10.73,475,true,Mechanical Keyboard Mini for everyday use. Category: electronics.
+SPO-00024,Tennis Balls Black,sports,109.91,290,true,Tennis Balls Black for everyday use. Category: sports.
+HOM-00025,Plant Pot White,home,440.14,272,true,Plant Pot White for everyday use. Category: home.
+FAS-00026,Linen Shirt Max,fashion,75.98,270,false,Linen Shirt Max for everyday use. Category: fashion.
+BEA-00027,Hair Brush Max,beauty,340.36,353,true,Hair Brush Max for everyday use. Category: beauty.
+SPO-00028,Resistance Band Grey,sports,198.27,264,true,Resistance Band Grey for everyday use. Category: sports.
+HOM-00029,Storage Box Red,home,30.68,10,false,Storage Box Red for everyday use. Category: home.
+BOO-00030,Cloud Patterns Black,books,33.80,323,true,Cloud Patterns Black for everyday use. Category: books.
+BOO-00031,Clean Code Notes Black,books,387.12,36,true,Clean Code Notes Black for everyday use. Category: books.
+BOO-00032,Data Pipelines 101 Mini,books,97.98,67,false,Data Pipelines 101 Mini for everyday use. Category: books.
+GRO-00033,Honey Jar Mini,grocery,363.76,97,true,Honey Jar Mini for everyday use. Category: grocery.
+HOM-00034,Throw Pillow Grey,home,191.76,239,true,Throw Pillow Grey for everyday use. Category: home.
+HOM-00035,Ceramic Mug Pro,home,328.24,409,true,Ceramic Mug Pro for everyday use. Category: home.
+BOO-00036,Cloud Patterns Red,books,242.26,71,true,Cloud Patterns Red for everyday use. Category: books.
+FAS-00037,Canvas Sneakers Mini,fashion,113.91,472,true,Canvas Sneakers Mini for everyday use. Category: fashion.
+GRO-00038,Coffee Beans Black,grocery,294.16,276,true,Coffee Beans Black for everyday use. Category: grocery.
+HOM-00039,Storage Box Blue,home,184.07,246,true,Storage Box Blue for everyday use. Category: home.
+BEA-00040,Face Cream Blue,beauty,171.78,199,true,Face Cream Blue for everyday use. Category: beauty.
+GRO-00041,Dark Chocolate Pro,grocery,314.07,374,true,Dark Chocolate Pro for everyday use. Category: grocery.
+GRO-00042,Olive Oil Red,grocery,134.93,495,true,Olive Oil Red for everyday use. Category: grocery.
+ELE-00043,Mechanical Keyboard Black,electronics,24.46,244,true,Mechanical Keyboard Black for everyday use. Category: electronics.
+FAS-00044,Denim Jacket Max,fashion,37.89,95,true,Denim Jacket Max for everyday use. Category: fashion.
+HOM-00045,Storage Box Pro,home,55.71,455,false,Storage Box Pro for everyday use. Category: home.
+BOO-00046,System Design Basics Lite,books,38.73,336,false,System Design Basics Lite for everyday use. Category: books.
+TOY-00047,Plush Bear Red,toys,302.04,160,true,Plush Bear Red for everyday use. Category: toys.
+SPO-00048,Resistance Band Blue,sports,302.92,153,true,Resistance Band Blue for everyday use. Category: sports.
+TOY-00049,Puzzle 1000 Black,toys,207.31,288,true,Puzzle 1000 Black for everyday use. Category: toys.
+HOM-00050,Storage Box Max,home,120.81,477,true,Storage Box Max for everyday use. Category: home.
+HOM-00051,Storage Box Grey,home,129.67,224,true,Storage Box Grey for everyday use. Category: home.
+SPO-00052,Yoga Mat Max,sports,136.12,339,true,Yoga Mat Max for everyday use. Category: sports.
+FAS-00053,Canvas Sneakers White,fashion,400.59,380,true,Canvas Sneakers White for everyday use. Category: fashion.
+FAS-00054,Canvas Sneakers Green,fashion,272.96,367,true,Canvas Sneakers Green for everyday use. Category: fashion.
+BOO-00055,Data Pipelines 101 Max,books,220.86,463,true,Data Pipelines 101 Max for everyday use. Category: books.
+HOM-00056,Throw Pillow Green,home,21.75,170,true,Throw Pillow Green for everyday use. Category: home.
+SPO-00057,Jump Rope Mini,sports,249.15,218,true,Jump Rope Mini for everyday use. Category: sports.
+ELE-00058,USB-C Charger White,electronics,425.38,353,true,USB-C Charger White for everyday use. Category: electronics.
+ELE-00059,Mechanical Keyboard Lite,electronics,249.53,220,true,Mechanical Keyboard Lite for everyday use. Category: electronics.
+ELE-00060,Laptop Stand Grey,electronics,404.74,407,true,Laptop Stand Grey for everyday use. Category: electronics.
+TOY-00061,Board Game Red,toys,300.79,181,true,Board Game Red for everyday use. Category: toys.
+BEA-00062,Shampoo Red,beauty,389.34,499,true,Shampoo Red for everyday use. Category: beauty.
+BEA-00063,Face Cream Blue,beauty,331.98,170,true,Face Cream Blue for everyday use. Category: beauty.
+BOO-00064,Data Pipelines 101 Blue,books,354.74,55,true,Data Pipelines 101 Blue for everyday use. Category: books.
+ELE-00065,Power Bank Red,electronics,91.41,470,true,Power Bank Red for everyday use. Category: electronics.
+TOY-00066,Plush Bear Red,toys,101.87,337,true,Plush Bear Red for everyday use. Category: toys.
+BEA-00067,Hand Soap Green,beauty,389.23,495,true,Hand Soap Green for everyday use. Category: beauty.
+TOY-00068,Magic Kit Max,toys,150.36,14,true,Magic Kit Max for everyday use. Category: toys.
+SPO-00069,Jump Rope Lite,sports,433.22,135,true,Jump Rope Lite for everyday use. Category: sports.
+HOM-00070,Throw Pillow Grey,home,328.39,160,true,Throw Pillow Grey for everyday use. Category: home.
+HOM-00071,Throw Pillow Lite,home,87.16,22,true,Throw Pillow Lite for everyday use. Category: home.
+ELE-00072,Smart Watch Grey,electronics,195.22,485,true,Smart Watch Grey for everyday use. Category: electronics.
+TOY-00073,Puzzle 1000 Green,toys,229.19,341,true,Puzzle 1000 Green for everyday use. Category: toys.
+TOY-00074,Magic Kit Green,toys,250.38,98,true,Magic Kit Green for everyday use. Category: toys.
+BEA-00075,Shampoo Lite,beauty,256.96,207,true,Shampoo Lite for everyday use. Category: beauty.
+ELE-00076,Laptop Stand Green,electronics,96.16,402,false,Laptop Stand Green for everyday use. Category: electronics.
+TOY-00077,Robot Kit Mini,toys,200.09,109,true,Robot Kit Mini for everyday use. Category: toys.
+GRO-00078,Olive Oil White,grocery,129.14,339,false,Olive Oil White for everyday use. Category: grocery.
+TOY-00079,Puzzle 1000 Red,toys,303.41,115,true,Puzzle 1000 Red for everyday use. Category: toys.
+FAS-00080,Denim Jacket Black,fashion,111.69,243,false,Denim Jacket Black for everyday use. Category: fashion.
+HOM-00081,Plant Pot Pro,home,398.99,294,true,Plant Pot Pro for everyday use. Category: home.
+BEA-00082,Body Lotion Pro,beauty,111.31,335,true,Body Lotion Pro for everyday use. Category: beauty.
+HOM-00083,Throw Pillow Red,home,80.80,490,true,Throw Pillow Red for everyday use. Category: home.
+GRO-00084,Green Tea Max,grocery,113.64,434,true,Green Tea Max for everyday use. Category: grocery.
+GRO-00085,Olive Oil Mini,grocery,301.07,286,false,Olive Oil Mini for everyday use. Category: grocery.
+TOY-00086,Robot Kit Lite,toys,367.12,456,true,Robot Kit Lite for everyday use. Category: toys.
+BEA-00087,Body Lotion Blue,beauty,335.16,243,true,Body Lotion Blue for everyday use. Category: beauty.
+SPO-00088,Tennis Balls Green,sports,345.08,266,true,Tennis Balls Green for everyday use. Category: sports.
+BOO-00089,Data Pipelines 101 Mini,books,36.71,146,true,Data Pipelines 101 Mini for everyday use. Category: books.
+SPO-00090,Dumbbell Set Grey,sports,402.08,41,true,Dumbbell Set Grey for everyday use. Category: sports.
+FAS-00091,Wool Scarf Pro,fashion,312.89,361,true,Wool Scarf Pro for everyday use. Category: fashion.
+HOM-00092,Throw Pillow Pro,home,150.23,238,true,Throw Pillow Pro for everyday use. Category: home.
+ELE-00093,Smart Watch Pro,electronics,176.49,394,false,Smart Watch Pro for everyday use. Category: electronics.
+ELE-00094,Webcam HD Mini,electronics,4.64,180,true,Webcam HD Mini for everyday use. Category: electronics.
+BEA-00095,Nail Kit Max,beauty,336.89,279,false,Nail Kit Max for everyday use. Category: beauty.
+BOO-00096,SQL Deep Dive Red,books,124.28,248,true,SQL Deep Dive Red for everyday use. Category: books.
+BEA-00097,Hand Soap Pro,beauty,326.43,430,true,Hand Soap Pro for everyday use. Category: beauty.
+FAS-00098,Denim Jacket Pro,fashion,267.17,339,true,Denim Jacket Pro for everyday use. Category: fashion.
+HOM-00099,Throw Pillow Blue,home,390.35,93,true,Throw Pillow Blue for everyday use. Category: home.
+SPO-00100,Resistance Band Grey,sports,96.82,167,true,Resistance Band Grey for everyday use. Category: sports.
+BEA-00101,Sunscreen SPF50 Pro,beauty,115.02,41,true,Sunscreen SPF50 Pro for everyday use. Category: beauty.
+ELE-00102,Wireless Earbuds Grey,electronics,102.45,35,true,Wireless Earbuds Grey for everyday use. Category: electronics.
+ELE-00103,Smart Watch Red,electronics,377.97,318,true,Smart Watch Red for everyday use. Category: electronics.
+BOO-00104,Python Cookbook Mini,books,301.92,288,true,Python Cookbook Mini for everyday use. Category: books.
+GRO-00105,Dark Chocolate Grey,grocery,77.17,310,true,Dark Chocolate Grey for everyday use. Category: grocery.
+FAS-00106,Canvas Sneakers White,fashion,261.25,475,true,Canvas Sneakers White for everyday use. Category: fashion.
+BEA-00107,Nail Kit Red,beauty,36.05,353,true,Nail Kit Red for everyday use. Category: beauty.
+HOM-00108,Wall Clock Lite,home,362.88,407,false,Wall Clock Lite for everyday use. Category: home.
+ELE-00109,Mechanical Keyboard Max,electronics,193.91,189,true,Mechanical Keyboard Max for everyday use. Category: electronics.
+TOY-00110,Building Blocks Pro,toys,370.40,54,true,Building Blocks Pro for everyday use. Category: toys.
+TOY-00111,Robot Kit Blue,toys,197.10,375,true,Robot Kit Blue for everyday use. Category: toys.
+SPO-00112,Gym Bag Mini,sports,197.14,374,false,Gym Bag Mini for everyday use. Category: sports.
+SPO-00113,Dumbbell Set Red,sports,374.17,44,true,Dumbbell Set Red for everyday use. Category: sports.
+GRO-00114,Honey Jar Mini,grocery,257.29,342,true,Honey Jar Mini for everyday use. Category: grocery.
+TOY-00115,Building Blocks Mini,toys,383.23,93,true,Building Blocks Mini for everyday use. Category: toys.
+BOO-00116,Kafka in Practice Green,books,154.47,450,false,Kafka in Practice Green for everyday use. Category: books.
+SPO-00117,Yoga Mat Max,sports,426.73,43,true,Yoga Mat Max for everyday use. Category: sports.
+BEA-00118,Body Lotion Max,beauty,341.66,353,true,Body Lotion Max for everyday use. Category: beauty.
+GRO-00119,Almonds Black,grocery,43.69,113,true,Almonds Black for everyday use. Category: grocery.
+BOO-00120,Data Pipelines 101 Lite,books,167.32,283,true,Data Pipelines 101 Lite for everyday use. Category: books.
+TOY-00121,Magic Kit Max,toys,150.19,359,true,Magic Kit Max for everyday use. Category: toys.
+SPO-00122,Cycling Gloves Green,sports,105.28,369,true,Cycling Gloves Green for everyday use. Category: sports.
+TOY-00123,Puzzle 1000 Max,toys,427.99,353,true,Puzzle 1000 Max for everyday use. Category: toys.
+BOO-00124,Cloud Patterns Mini,books,125.87,301,true,Cloud Patterns Mini for everyday use. Category: books.
+SPO-00125,Water Bottle Red,sports,134.72,184,true,Water Bottle Red for everyday use. Category: sports.
+SPO-00126,Yoga Mat Max,sports,58.71,23,true,Yoga Mat Max for everyday use. Category: sports.
+SPO-00127,Jump Rope Mini,sports,47.96,6,false,Jump Rope Mini for everyday use. Category: sports.
+SPO-00128,Gym Bag Mini,sports,199.33,94,true,Gym Bag Mini for everyday use. Category: sports.
+SPO-00129,Gym Bag White,sports,370.31,205,true,Gym Bag White for everyday use. Category: sports.
+HOM-00130,Ceramic Mug Blue,home,68.84,288,true,Ceramic Mug Blue for everyday use. Category: home.
+HOM-00131,Storage Box White,home,252.02,213,false,Storage Box White for everyday use. Category: home.
+BOO-00132,React Handbook Mini,books,409.01,152,false,React Handbook Mini for everyday use. Category: books.
+BEA-00133,Sunscreen SPF50 Lite,beauty,280.22,312,true,Sunscreen SPF50 Lite for everyday use. Category: beauty.
+BOO-00134,Cloud Patterns Green,books,297.87,80,true,Cloud Patterns Green for everyday use. Category: books.
+FAS-00135,Running Cap Blue,fashion,3.20,230,false,Running Cap Blue for everyday use. Category: fashion.
+GRO-00136,Dark Chocolate Black,grocery,105.70,361,true,Dark Chocolate Black for everyday use. Category: grocery.
+GRO-00137,Coffee Beans Red,grocery,415.91,403,false,Coffee Beans Red for everyday use. Category: grocery.
+BOO-00138,React Handbook White,books,245.96,331,true,React Handbook White for everyday use. Category: books.
+SPO-00139,Jump Rope White,sports,28.72,405,true,Jump Rope White for everyday use. Category: sports.
+SPO-00140,Gym Bag White,sports,211.98,155,true,Gym Bag White for everyday use. Category: sports.
+SPO-00141,Gym Bag Mini,sports,38.04,20,true,Gym Bag Mini for everyday use. Category: sports.
+TOY-00142,Plush Bear Black,toys,42.91,492,false,Plush Bear Black for everyday use. Category: toys.
+ELE-00143,Laptop Stand Lite,electronics,20.02,387,true,Laptop Stand Lite for everyday use. Category: electronics.
+GRO-00144,Almonds Green,grocery,83.31,299,true,Almonds Green for everyday use. Category: grocery.
+GRO-00145,Coffee Beans Mini,grocery,157.89,170,true,Coffee Beans Mini for everyday use. Category: grocery.
+HOM-00146,Cotton Towel Grey,home,186.42,253,true,Cotton Towel Grey for everyday use. Category: home.
+BEA-00147,Face Cream Mini,beauty,41.45,129,true,Face Cream Mini for everyday use. Category: beauty.
+HOM-00148,Throw Pillow Max,home,371.57,0,true,Throw Pillow Max for everyday use. Category: home.
+GRO-00149,Rice 5kg Black,grocery,86.04,185,false,Rice 5kg Black for everyday use. Category: grocery.
+GRO-00150,Almonds Black,grocery,93.19,281,true,Almonds Black for everyday use. Category: grocery.
+SPO-00151,Gym Bag Mini,sports,56.40,498,false,Gym Bag Mini for everyday use. Category: sports.
+BOO-00152,Python Cookbook Green,books,248.78,282,true,Python Cookbook Green for everyday use. Category: books.
+HOM-00153,Storage Box White,home,208.73,60,true,Storage Box White for everyday use. Category: home.
+GRO-00154,Dark Chocolate Max,grocery,318.02,212,true,Dark Chocolate Max for everyday use. Category: grocery.
+GRO-00155,Honey Jar Mini,grocery,248.97,196,true,Honey Jar Mini for everyday use. Category: grocery.
+FAS-00156,Running Cap Green,fashion,348.16,437,true,Running Cap Green for everyday use. Category: fashion.
+TOY-00157,Plush Bear Black,toys,128.71,152,false,Plush Bear Black for everyday use. Category: toys.
+GRO-00158,Olive Oil Mini,grocery,243.28,176,true,Olive Oil Mini for everyday use. Category: grocery.
+BEA-00159,Body Lotion Grey,beauty,391.58,357,true,Body Lotion Grey for everyday use. Category: beauty.
+BEA-00160,Hair Brush Pro,beauty,21.55,381,true,Hair Brush Pro for everyday use. Category: beauty.
+BEA-00161,Nail Kit Blue,beauty,223.91,18,true,Nail Kit Blue for everyday use. Category: beauty.
+TOY-00162,Puzzle 1000 Mini,toys,46.67,466,true,Puzzle 1000 Mini for everyday use. Category: toys.
+ELE-00163,Bluetooth Speaker Pro,electronics,392.18,496,true,Bluetooth Speaker Pro for everyday use. Category: electronics.
+HOM-00164,Plant Pot Green,home,153.68,354,true,Plant Pot Green for everyday use. Category: home.
+HOM-00165,Scented Candle Max,home,172.24,162,true,Scented Candle Max for everyday use. Category: home.
+ELE-00166,USB-C Charger Red,electronics,284.76,471,true,USB-C Charger Red for everyday use. Category: electronics.
+BOO-00167,Clean Code Notes Pro,books,440.30,389,true,Clean Code Notes Pro for everyday use. Category: books.
+GRO-00168,Olive Oil Green,grocery,406.73,23,true,Olive Oil Green for everyday use. Category: grocery.
+ELE-00169,Laptop Stand Grey,electronics,169.93,74,true,Laptop Stand Grey for everyday use. Category: electronics.
+BEA-00170,Shampoo Blue,beauty,80.43,312,true,Shampoo Blue for everyday use. Category: beauty.
+BOO-00171,SQL Deep Dive Lite,books,66.12,236,true,SQL Deep Dive Lite for everyday use. Category: books.
+GRO-00172,Dark Chocolate Black,grocery,404.71,238,true,Dark Chocolate Black for everyday use. Category: grocery.
+FAS-00173,Running Cap Mini,fashion,425.47,300,true,Running Cap Mini for everyday use. Category: fashion.
+BEA-00174,Sunscreen SPF50 Mini,beauty,380.70,101,true,Sunscreen SPF50 Mini for everyday use. Category: beauty.
+GRO-00175,Coffee Beans Red,grocery,172.85,183,false,Coffee Beans Red for everyday use. Category: grocery.
+SPO-00176,Cycling Gloves Black,sports,440.12,337,true,Cycling Gloves Black for everyday use. Category: sports.
+SPO-00177,Yoga Mat Lite,sports,389.55,398,true,Yoga Mat Lite for everyday use. Category: sports.
+GRO-00178,Dark Chocolate Red,grocery,273.97,180,true,Dark Chocolate Red for everyday use. Category: grocery.
+BOO-00179,Data Pipelines 101 Blue,books,283.46,462,true,Data Pipelines 101 Blue for everyday use. Category: books.
+SPO-00180,Gym Bag Black,sports,261.65,374,true,Gym Bag Black for everyday use. Category: sports.
+HOM-00181,Wall Clock Grey,home,336.87,89,true,Wall Clock Grey for everyday use. Category: home.
+FAS-00182,Silk Tie Max,fashion,226.80,139,true,Silk Tie Max for everyday use. Category: fashion.
+SPO-00183,Gym Bag Green,sports,336.46,173,true,Gym Bag Green for everyday use. Category: sports.
+GRO-00184,Coffee Beans Blue,grocery,339.86,115,true,Coffee Beans Blue for everyday use. Category: grocery.
+TOY-00185,Puzzle 1000 Pro,toys,8.24,274,true,Puzzle 1000 Pro for everyday use. Category: toys.
+GRO-00186,Pasta Pack Green,grocery,263.88,421,true,Pasta Pack Green for everyday use. Category: grocery.
+HOM-00187,Storage Box Mini,home,13.21,452,true,Storage Box Mini for everyday use. Category: home.
+TOY-00188,Board Game White,toys,286.66,237,true,Board Game White for everyday use. Category: toys.
+BEA-00189,Lip Balm Blue,beauty,22.32,19,true,Lip Balm Blue for everyday use. Category: beauty.
+GRO-00190,Coffee Beans White,grocery,107.19,275,true,Coffee Beans White for everyday use. Category: grocery.
+BEA-00191,Body Lotion Grey,beauty,302.38,380,true,Body Lotion Grey for everyday use. Category: beauty.
+BEA-00192,Shampoo Pro,beauty,295.41,426,true,Shampoo Pro for everyday use. Category: beauty.
+BEA-00193,Sunscreen SPF50 Black,beauty,311.25,111,true,Sunscreen SPF50 Black for everyday use. Category: beauty.
+GRO-00194,Honey Jar Grey,grocery,46.51,351,true,Honey Jar Grey for everyday use. Category: grocery.
+TOY-00195,Building Blocks Pro,toys,125.59,495,true,Building Blocks Pro for everyday use. Category: toys.
+GRO-00196,Coffee Beans Red,grocery,289.48,305,true,Coffee Beans Red for everyday use. Category: grocery.
+ELE-00197,Mechanical Keyboard Red,electronics,444.99,402,false,Mechanical Keyboard Red for everyday use. Category: electronics.
+BOO-00198,Clean Code Notes Max,books,94.81,110,true,Clean Code Notes Max for everyday use. Category: books.
+TOY-00199,Toy Car Lite,toys,3.27,439,true,Toy Car Lite for everyday use. Category: toys.
+FAS-00200,Canvas Sneakers Blue,fashion,51.25,443,true,Canvas Sneakers Blue for everyday use. Category: fashion.

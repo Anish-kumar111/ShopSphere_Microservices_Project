@@ -1,0 +1,9 @@
+{
+  "identities": [
+    {
+      "name": "shopsphere-dev",
+      "credentials": [{ "accessKey": "shopsphere", "secretKey": "shopsphere_dev_secret" }],
+      "actions": ["Admin", "Read", "Write", "List", "Tagging"]
+    }
+  ]
+}

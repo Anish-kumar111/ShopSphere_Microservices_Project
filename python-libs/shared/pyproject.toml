@@ -1,0 +1,15 @@
+[project]
+name = "shopsphere-shared"
+version = "0.1.0"
+description = "Settings, logging, health checks and app/worker runners shared by the Python services"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115",
+  "pydantic-settings>=2.7",
+  "structlog>=25.1",
+  "uvicorn[standard]>=0.34",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

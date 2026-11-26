@@ -1,0 +1,14 @@
+# Normalise line endings. Shell scripts and container files MUST use LF, or Linux containers
+# fail with errors like "/bin/sh^M: bad interpreter" when the repo is checked out on Windows.
+* text=auto
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.conf text eol=lf
+*.sql text eol=lf
+*Dockerfile text eol=lf
+*.Dockerfile text eol=lf
+
+*.pdf binary
+*.png binary
+*.xlsx binary

@@ -1,0 +1,16 @@
+[project]
+name = "etl-worker"
+version = "0.1.0"
+requires-python = ">=3.12"
+# Add libraries as you build the service: uv add --package etl-worker <library>
+dependencies = ["shopsphere-shared"]
+
+[project.scripts]
+etl-worker = "etl_worker.main:run"
+
+[tool.uv.sources]
+shopsphere-shared = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

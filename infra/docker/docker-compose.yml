@@ -1,0 +1,476 @@
+# ShopSphere local environment (development only: the passwords here are not secrets).
+#
+#   docker compose up -d                                   core: postgres, mongo, redis, mailpit, traefik
+#   docker compose --profile events up -d                  + kafka, rabbitmq (+ topics, queues), kafka-ui
+#   docker compose --profile files up -d                   + S3 storage: SeaweedFS (+ buckets)
+#   docker compose --profile ai up -d                      + ollama (+ models, first run downloads ~2.5 GB)
+#   docker compose --profile obs up -d                     + grafana / loki / tempo / prometheus / otel collector
+#   docker compose --profile apps up -d --build            the whole shop in containers (brokers + buckets included)
+#   docker compose ps                                      what is running, and is it healthy?
+#   docker compose down        /  down -v                  stop  /  stop and DELETE all data
+#
+# Tip: put COMPOSE_PROFILES=events,files in infra/docker/.env to make those profiles the default.
+#
+# Usually you run your own services on the host (`pnpm dev`, `uv run ...`); Traefik reaches them through
+# host.docker.internal. The `apps` profile publishes the same ports, so http://shop.localhost works either way.
+name: shopsphere
+
+# ------------------------------------------------------------------ reusable blocks (YAML anchors)
+# Keys starting with "x-" are ignored by Compose; they only exist to be referenced with *name.
+
+x-logging: &logging # rotate container logs so they cannot fill the disk
+  driver: json-file
+  options: { max-size: "10m", max-file: "3" }
+
+x-healthcheck-timing: &health-timing
+  interval: 10s
+  timeout: 3s
+  retries: 6
+  start_period: 20s
+
+x-app-env: &app-env # shared by every application container
+  NODE_ENV: production
+  APP_ENV: production
+  LOG_LEVEL: info
+  # Services ignore keys they do not read yet; add them to src/config/env.ts (Node) or settings.py (Python).
+  DATABASE_URL: postgres://${POSTGRES_USER:-shop}:${POSTGRES_PASSWORD:-shop_dev_pw}@postgres:5432/${POSTGRES_DB:-shopsphere}
+  MONGO_URL: mongodb://mongo:27017/shopsphere
+  REDIS_URL: redis://redis:6379
+  KAFKA_BROKERS: kafka:19092
+  RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+  # Object storage: SeaweedFS locally, or Cloudflare R2 / AWS S3 when set in infra/docker/.env
+  S3_ENDPOINT: ${S3_ENDPOINT:-http://s3:8333}
+  S3_PUBLIC_ENDPOINT: ${S3_PUBLIC_ENDPOINT:-http://localhost:8333} # what BROWSERS use in presigned URLs
+  S3_REGION: ${S3_REGION:-us-east-1}
+  S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-shopsphere}
+  S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-shopsphere_dev_secret}
+  S3_IMPORTS_BUCKET: ${S3_IMPORTS_BUCKET:-imports}
+  S3_INVOICES_BUCKET: ${S3_INVOICES_BUCKET:-invoices}
+  SMTP_URL: smtp://mailpit:1025
+  JWKS_URL: http://auth:4001/.well-known/jwks.json
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://lgtm:4318
+
+x-app-deps: &app-deps # every app needs the core stores to be healthy first
+  postgres: { condition: service_healthy }
+  redis: { condition: service_healthy }
+
+x-broker-deps: &broker-deps # apps that talk to Kafka / RabbitMQ also wait for topics and queues
+  kafka-init: { condition: service_completed_successfully }
+  rabbitmq-init: { condition: service_completed_successfully }
+
+x-app: &app # base for every application container
+  profiles: ["apps"]
+  restart: unless-stopped
+  logging: *logging
+  stop_grace_period: 30s # > SHUTDOWN_TIMEOUT_MS (25 s), same rule as ECS stopTimeout
+  environment: *app-env
+  depends_on: *app-deps
+  deploy:
+    resources:
+      limits: { memory: 384m }
+
+x-node-build: &node-build
+  context: ../..
+  dockerfile: infra/docker/images/node.Dockerfile
+  target: service
+
+x-python-build: &python-build
+  context: ../..
+  dockerfile: infra/docker/images/python.Dockerfile
+
+services:
+  # ================================================================ core (always on)
+  postgres:
+    image: pgvector/pgvector:pg16 # PostgreSQL 16 + pgvector
+    command: # turn on query statistics (course Chapter 7)
+      - postgres
+      - -c
+      - shared_preload_libraries=pg_stat_statements
+      - -c
+      - log_min_duration_statement=500
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-shop}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-shop_dev_pw}
+      POSTGRES_DB: ${POSTGRES_DB:-shopsphere}
+    ports: ["127.0.0.1:${POSTGRES_PORT:-5432}:5432"] # only your PC can connect, not your whole network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init/postgres:/docker-entrypoint-initdb.d:ro # *.sql run on the FIRST start only
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+    logging: *logging
+
+  mongo:
+    image: mongo:7
+    ports: ["127.0.0.1:${MONGO_PORT:-27017}:27017"]
+    volumes: [mongodata:/data/db]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+    logging: *logging
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"] # survive restarts (idempotency keys, BullMQ)
+    ports: ["127.0.0.1:${REDIS_PORT:-6379}:6379"]
+    volumes: [redisdata:/data]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "redis-cli", "ping"]
+    logging: *logging
+
+  mailpit: # catches every email: http://localhost:8025
+    image: axllent/mailpit
+    ports: ["127.0.0.1:1025:1025", "127.0.0.1:8025:8025"]
+    logging: *logging
+
+  traefik: # local edge router: http://shop.localhost, http://admin.localhost, dashboard :8080
+    image: traefik:v3.3
+    command:
+      - --providers.file.filename=/etc/traefik/dynamic.yml
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --api.dashboard=true
+      - --api.insecure=true # dashboard without login: fine on 127.0.0.1 only
+      - --ping=true
+    ports: ["127.0.0.1:80:80", "127.0.0.1:8080:8080"]
+    volumes: ["./traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro"]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+    logging: *logging
+
+  # ================================================================ events (Kafka + RabbitMQ)
+  kafka:
+    image: apache/kafka:3.9.0 # KRaft mode: no ZooKeeper
+    profiles: ["events", "apps"]
+    ports: ["127.0.0.1:9092:9092"]
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      # Your PC uses localhost:9092; containers use kafka:19092 (the #1 Kafka-in-Docker mistake).
+      KAFKA_LISTENERS: PLAINTEXT://:19092,CONTROLLER://:9093,PLAINTEXT_HOST://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:19092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false" # topics come from kafka-init, never by accident
+    volumes: [kafkadata:/var/lib/kafka/data]
+    healthcheck:
+      <<: *health-timing
+      start_period: 30s
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 > /dev/null 2>&1"]
+    logging: *logging
+
+  kafka-init: # one-shot job: creates the topics from course Chapter 15, then exits
+    image: apache/kafka:3.9.0
+    profiles: ["events", "apps"]
+    depends_on: { kafka: { condition: service_healthy } }
+    restart: "no"
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        set -e
+        create() {
+          /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:19092 --create --if-not-exists \
+            --topic "$$1" --partitions "$$2" --replication-factor 1 --config retention.ms="$$3"
+        }
+        WEEK=604800000; TWO_WEEKS=1209600000
+        create orders.events  6 $$WEEK
+        create users.events   3 $$WEEK
+        create imports.events 3 $$WEEK
+        create orders.events.dlt  1 $$TWO_WEEKS
+        create users.events.dlt   1 $$TWO_WEEKS
+        create imports.events.dlt 1 $$TWO_WEEKS
+        /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:19092 --list
+    logging: *logging
+
+  kafka-ui: # http://localhost:8085
+    image: kafbat/kafka-ui
+    profiles: ["events"]
+    ports: ["127.0.0.1:8085:8080"]
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:19092
+    depends_on: { kafka: { condition: service_healthy } }
+    logging: *logging
+
+  rabbitmq: # UI: http://localhost:15672 (guest / guest)
+    image: rabbitmq:4-management
+    profiles: ["events", "apps"]
+    hostname: rabbitmq # RabbitMQ stores data per node name; a fixed hostname keeps it across restarts
+    ports: ["127.0.0.1:5672:5672", "127.0.0.1:15672:15672"]
+    volumes: [rabbitdata:/var/lib/rabbitmq]
+    healthcheck:
+      <<: *health-timing
+      start_period: 30s
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_port_connectivity"]
+    logging: *logging
+
+  rabbitmq-init: # one-shot job: exchanges, quorum queues and dead-letter queues from definitions.json
+    image: curlimages/curl:8.11.1
+    profiles: ["events", "apps"]
+    depends_on: { rabbitmq: { condition: service_healthy } }
+    restart: "no"
+    volumes: ["./rabbitmq/definitions.json:/definitions.json:ro"]
+    command:
+      - --fail-with-body
+      - --silent
+      - --show-error
+      - --retry
+      - "10"
+      - --retry-all-errors
+      - --retry-delay
+      - "3"
+      - --user
+      - guest:guest
+      - --header
+      - "content-type: application/json"
+      - --data-binary
+      - "@/definitions.json"
+      - http://rabbitmq:15672/api/definitions
+    logging: *logging
+
+  # ================================================================ files (S3-compatible storage)
+  # Local S3 = SeaweedFS (Apache-2.0). Your code only sees "an S3 endpoint", so the same settings work
+  # with Cloudflare R2 or AWS S3: set S3_ENDPOINT / S3_REGION / S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY
+  # in infra/docker/.env (see .env.example) and storage-init creates the buckets there instead.
+  s3: # S3 API on http://localhost:8333 (access key: shopsphere / secret: shopsphere_dev_secret)
+    image: chrislusf/seaweedfs:4.55
+    profiles: ["files", "apps"]
+    command: ["server", "-dir=/data", "-s3", "-s3.config=/etc/seaweedfs/s3.json"]
+    ports: ["127.0.0.1:8333:8333"]
+    volumes:
+      - s3data:/data
+      - ./seaweedfs/s3.json:/etc/seaweedfs/s3.json:ro # access keys for local development
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8333/healthz"]
+    logging: *logging
+
+  storage-init: # one-shot job: buckets + browser CORS + "delete raw uploads after 30 days"
+    image: amazon/aws-cli:2.27.50 # the same commands work against SeaweedFS, Cloudflare R2 and AWS S3
+    profiles: ["files", "apps"]
+    depends_on: { s3: { condition: service_healthy } }
+    restart: "no"
+    environment:
+      S3_ENDPOINT: ${S3_ENDPOINT:-http://s3:8333}
+      AWS_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-shopsphere}
+      AWS_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-shopsphere_dev_secret}
+      AWS_DEFAULT_REGION: ${S3_REGION:-us-east-1} # Cloudflare R2 uses "auto"
+      IMPORTS_BUCKET: ${S3_IMPORTS_BUCKET:-imports}
+      INVOICES_BUCKET: ${S3_INVOICES_BUCKET:-invoices}
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        set -e
+        s3() { aws --endpoint-url "$$S3_ENDPOINT" s3api "$$@"; }
+        for bucket in "$$IMPORTS_BUCKET" "$$INVOICES_BUCKET"; do
+          s3 head-bucket --bucket "$$bucket" 2>/dev/null || s3 create-bucket --bucket "$$bucket"
+        done
+        s3 put-bucket-cors --bucket "$$IMPORTS_BUCKET" --cors-configuration '{
+          "CORSRules": [{ "AllowedOrigins": ["http://admin.localhost", "http://localhost:5173"],
+                          "AllowedMethods": ["PUT", "GET", "HEAD"], "AllowedHeaders": ["*"],
+                          "ExposeHeaders": ["ETag"], "MaxAgeSeconds": 3000 }] }'
+        s3 put-bucket-lifecycle-configuration --bucket "$$IMPORTS_BUCKET" --lifecycle-configuration '{
+          "Rules": [{ "ID": "expire-raw-uploads", "Status": "Enabled",
+                      "Filter": { "Prefix": "raw/" }, "Expiration": { "Days": 30 } }] }' \
+          || echo "lifecycle rules not supported by this S3 server (fine locally; R2 and AWS S3 support them)"
+        aws --endpoint-url "$$S3_ENDPOINT" s3 ls
+    logging: *logging
+
+  # ================================================================ ai (local LLM)
+  ollama:
+    image: ollama/ollama
+    profiles: ["ai"]
+    ports: ["127.0.0.1:11434:11434"]
+    volumes: [ollamadata:/root/.ollama]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "ollama", "list"]
+    logging: *logging
+    # NVIDIA GPU? Uncomment (needs the NVIDIA Container Toolkit / Docker Desktop GPU support):
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices: [{ driver: nvidia, count: all, capabilities: [gpu] }]
+
+  ollama-init: # one-shot job: download the chat + embedding models (course Chapter 20)
+    image: ollama/ollama
+    profiles: ["ai"]
+    depends_on: { ollama: { condition: service_healthy } }
+    restart: "no"
+    environment: { OLLAMA_HOST: "http://ollama:11434" }
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["ollama pull llama3.2:3b && ollama pull nomic-embed-text"]
+    logging: *logging
+
+  # ================================================================ observability
+  lgtm: # Grafana (http://localhost:3001, admin/admin) + Loki + Tempo + Prometheus + OTel Collector
+    image: grafana/otel-lgtm
+    profiles: ["obs"]
+    ports: ["127.0.0.1:3001:3000", "127.0.0.1:4317:4317", "127.0.0.1:4318:4318"]
+    volumes: [lgtmdata:/data]
+    logging: *logging
+
+  # ================================================================ apps (the same images ECS / EKS run)
+  bff:
+    <<: *app
+    build: { <<: *node-build, args: { PACKAGE: "@shopsphere/bff" } }
+    environment:
+      <<: *app-env
+      AUTH_URL: http://auth:4001
+      USER_URL: http://user:4002
+      ORDER_URL: http://order:4003
+      IMPORT_URL: http://import-api:8001
+    ports: ["127.0.0.1:4000:4000"]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:4000/health/ready"]
+
+  auth:
+    <<: *app
+    build: { <<: *node-build, args: { PACKAGE: "@shopsphere/auth" } }
+    ports: ["127.0.0.1:4001:4001"]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:4001/health/ready"]
+
+  user:
+    <<: *app
+    build: { <<: *node-build, args: { PACKAGE: "@shopsphere/user" } }
+    depends_on: { <<: [*app-deps, *broker-deps], mongo: { condition: service_healthy } }
+    ports: ["127.0.0.1:4002:4002"]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:4002/health/ready"]
+
+  order:
+    <<: *app
+    build: { <<: *node-build, args: { PACKAGE: "@shopsphere/order" } }
+    ports: ["127.0.0.1:4003:4003"]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:4003/health/ready"]
+
+  realtime-gateway:
+    <<: *app
+    build: { <<: *node-build, args: { PACKAGE: "@shopsphere/realtime-gateway" } }
+    depends_on: { <<: [*app-deps, *broker-deps] }
+    environment:
+      <<: *app-env
+      AI_CHAT_URL: http://ai-chat:8000
+    ports: ["127.0.0.1:4004:4004"]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:4004/health/ready"]
+
+  outbox-relay:
+    <<: *app
+    build: { <<: *node-build, args: { PACKAGE: "@shopsphere/outbox-relay" } }
+    depends_on: { <<: [*app-deps, *broker-deps] }
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:9100/health/ready"]
+
+  notification-worker:
+    <<: *app
+    build: { <<: *node-build, args: { PACKAGE: "@shopsphere/notification-worker" } }
+    depends_on: { <<: [*app-deps, *broker-deps] }
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:9101/health/ready"]
+
+  analytics-consumer:
+    <<: *app
+    build: { <<: *node-build, args: { PACKAGE: "@shopsphere/analytics-consumer" } }
+    depends_on: { <<: [*app-deps, *broker-deps] }
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:9102/health/ready"]
+
+  cache-updater:
+    <<: *app
+    build: { <<: *node-build, args: { PACKAGE: "@shopsphere/cache-updater" } }
+    depends_on: { <<: [*app-deps, *broker-deps] }
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:9103/health/ready"]
+
+  import-api:
+    <<: *app
+    build: { <<: *python-build, args: { SERVICE: import-api } }
+    depends_on: { <<: [*app-deps, *broker-deps], storage-init: { condition: service_completed_successfully } }
+    ports: ["127.0.0.1:8001:8001"]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health/ready', timeout=2)"]
+
+  etl-worker:
+    <<: *app
+    build: { <<: *python-build, args: { SERVICE: etl-worker } }
+    depends_on: { <<: [*app-deps, *broker-deps], storage-init: { condition: service_completed_successfully } }
+    deploy:
+      resources:
+        limits: { memory: 1g } # pandas chunks of a 50,000-row file
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9104/health/ready', timeout=2)"]
+
+  ai-chat:
+    <<: *app
+    build: { <<: *python-build, args: { SERVICE: ai-chat } }
+    depends_on:
+      <<: *app-deps
+      mongo: { condition: service_healthy }
+      ollama: { condition: service_healthy, required: false } # only when the "ai" profile is on
+    environment:
+      <<: *app-env
+      OLLAMA_URL: http://ollama:11434
+    ports: ["127.0.0.1:8000:8000"]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=2)"]
+
+  web:
+    <<: *app
+    build: { <<: *node-build, target: web, args: { PACKAGE: "@shopsphere/web" } }
+    environment:
+      BFF_INTERNAL_URL: http://bff:4000
+    depends_on: { bff: { condition: service_healthy } }
+    deploy:
+      resources:
+        limits: { memory: 512m }
+    ports: ["127.0.0.1:3000:3000"]
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/health/ready"]
+
+  admin:
+    <<: *app
+    build: { <<: *node-build, target: admin, args: { PACKAGE: "@shopsphere/admin" } }
+    environment: {}
+    depends_on: {}
+    deploy:
+      resources:
+        limits: { memory: 64m }
+    ports: ["127.0.0.1:5173:8080"] # same host port as the Vite dev server, so the Traefik route still works
+    healthcheck:
+      <<: *health-timing
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/health/ready"]
+
+volumes:
+  pgdata: {}
+  mongodata: {}
+  redisdata: {}
+  kafkadata: {}
+  rabbitdata: {}
+  s3data: {}
+  ollamadata: {}
+  lgtmdata: {}

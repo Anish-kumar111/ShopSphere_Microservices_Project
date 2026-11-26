@@ -1,0 +1,29 @@
+# uv workspace for every Python service: one lockfile (uv.lock), one dev venv (.venv).
+#   uv sync --all-packages                      install everything for development
+#   uv run --package import-api import-api      run one service
+[project]
+name = "shopsphere-python"
+version = "0.0.0"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = ["httpx>=0.28", "pytest>=8.3", "pytest-asyncio>=0.25", "ruff>=0.9"]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["python-libs/shared", "services/import-api", "services/etl-worker", "services/ai-chat"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "ASYNC"]
+
+[tool.pytest.ini_options]
+testpaths = ["python-libs", "services"]
+addopts = "--import-mode=importlib"
+asyncio_mode = "auto"

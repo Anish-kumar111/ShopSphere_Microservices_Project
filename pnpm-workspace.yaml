@@ -1,0 +1,4 @@
+packages:
+  - apps/*
+  - packages/*
+  - services/* # Python services have no package.json, so pnpm skips them

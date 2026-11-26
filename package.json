@@ -1,0 +1,42 @@
+{
+  "name": "shopsphere",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "docker": "docker compose -f infra/docker/docker-compose.yml",
+    "docker:core": "docker compose -f infra/docker/docker-compose.yml up -d --wait",
+    "docker:up": "docker compose -f infra/docker/docker-compose.yml --profile events --profile files up -d --wait",
+    "docker:ai": "docker compose -f infra/docker/docker-compose.yml --profile ai up -d --wait",
+    "docker:obs": "docker compose -f infra/docker/docker-compose.yml --profile obs up -d --wait",
+    "docker:apps": "docker compose -f infra/docker/docker-compose.yml --profile apps up -d --build --wait",
+    "docker:build": "docker compose -f infra/docker/docker-compose.yml --profile apps build",
+    "docker:ps": "docker compose -f infra/docker/docker-compose.yml --profile \"*\" ps -a",
+    "docker:logs": "docker compose -f infra/docker/docker-compose.yml --profile \"*\" logs -f --tail 100",
+    "docker:stop": "docker compose -f infra/docker/docker-compose.yml --profile \"*\" stop",
+    "docker:down": "docker compose -f infra/docker/docker-compose.yml --profile \"*\" down",
+    "docker:wipe": "docker compose -f infra/docker/docker-compose.yml --profile \"*\" down --volumes",
+    "docker:config": "docker compose -f infra/docker/docker-compose.yml --profile \"*\" config --quiet",
+    "docker:storage-init": "docker compose -f infra/docker/docker-compose.yml run --rm --no-deps storage-init",
+    "docker:psql": "docker compose -f infra/docker/docker-compose.yml exec postgres psql -U shop -d shopsphere",
+    "docker:mongo": "docker compose -f infra/docker/docker-compose.yml exec mongo mongosh shopsphere",
+    "docker:redis": "docker compose -f infra/docker/docker-compose.yml exec redis redis-cli"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "prettier": "^3.6.2",
+    "tsx": "^4.23.15",
+    "turbo": "^2.11.13",
+    "typescript": "~6.0.3",
+    "vitest": "^4.0.0"
+  }
+}

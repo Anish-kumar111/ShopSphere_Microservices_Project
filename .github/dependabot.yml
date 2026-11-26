@@ -1,0 +1,33 @@
+# Weekly pull requests that keep dependencies, base images and actions up to date.
+# Grouping keeps it to a few PRs per week instead of dozens.
+version: 2
+updates:
+  - package-ecosystem: npm # pnpm workspaces: one entry at the root covers every package.json
+    directory: /
+    schedule: { interval: weekly, day: monday }
+    open-pull-requests-limit: 10
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: uv # uv workspace (pyproject.toml + uv.lock at the root)
+    directory: /
+    schedule: { interval: weekly, day: monday }
+    groups:
+      python-minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: docker # FROM lines in the Dockerfiles
+    directory: /infra/docker/images
+    schedule: { interval: weekly, day: monday }
+
+  - package-ecosystem: docker-compose # image tags in docker-compose.yml
+    directory: /infra/docker
+    schedule: { interval: weekly, day: monday }
+
+  - package-ecosystem: github-actions # uses: lines in .github/workflows
+    directory: /
+    schedule: { interval: weekly, day: monday }
+    groups:
+      actions:
+        patterns: ["*"]
